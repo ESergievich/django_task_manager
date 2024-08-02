@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_bootstrap5',
     'task_manager',
+    'tasks',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -81,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-        'default': dj_database_url.config(),
+        'default': dj_database_url.config(default='sqlite:///db.sqlite3'),
     }
 }
 
@@ -137,3 +139,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'users'
+LOGIN_REDIRECT_URL = 'users'
+LOGOUT_REDIRECT_URL = 'users'
