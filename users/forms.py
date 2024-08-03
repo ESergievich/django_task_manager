@@ -8,7 +8,7 @@ class RegisterUserForm(UserCreationForm):
         model = get_user_model()
         fields = ('first_name', 'last_name', 'username', 'password1', 'password2')
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-label', 'placeholder': "Подтверждение пароля"}),
+            'first_name': forms.TextInput(attrs={'class': 'form-label'}),
             'last_name': forms.TextInput(attrs={'class': 'form-label'}),
             'username': forms.TextInput(attrs={'class': 'form-label'}),
             'password1': forms.PasswordInput(attrs={'class': 'form-label'}),
