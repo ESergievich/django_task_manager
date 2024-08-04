@@ -23,11 +23,11 @@ class UsersListView(ListView):
 class UserRegisterView(CreateView):
     form_class = RegisterUserForm
     template_name = 'users/user_form.html'
-    extra_context = {'title': _('Register')}
+    extra_context = {'title': _('Registration')}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['button'] = _('Create user')
+        context['button'] = _('Register')
         return context
 
     def get_success_url(self):

@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block content %}
-    <a class="btn btn-primary mb-3" href="{% url 'task_create' %}">{{ button }}</a>
+    <a class="btn btn-primary mb-3" href="{% url 'label_create' %}">{{ button }}</a>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -23,7 +23,7 @@
             <td>
                 <a href="{% url 'label_update' label.pk %}">{% trans "Update" %}</a>
                 <br>
-                <a href="{% url 'v_delete' label.pk %}">{% trans "Delete" %}</a>
+                <a href="{% url 'label_delete' label.pk %}">{% trans "Delete" %}</a>
             </td>
         </tr>
         {% endfor %}

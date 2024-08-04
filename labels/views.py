@@ -19,14 +19,12 @@ class LabelsRequiredMixin:
 class LabelsListView(LabelsRequiredMixin, ListView):
     model = Label
     template_name = 'labels/labels_show.html'
-    extra_context = {
-        'title': _('Labels'),
-        'button': _('Create label')
-    }
+    extra_context = {'title': _('Labels')}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['labels'] = self.model.objects.all()
+        context['button'] = _('Create label')
         return context
 
 
@@ -67,15 +65,23 @@ class LabelUpdateView(LabelsRequiredMixin, UpdateView):
 
 class LabelDeleteView(LabelsRequiredMixin, DeleteView):
     model = Label
-    form_class = LabelCreateForm
-    template_name = 'labels/label_form.html'
+    template_name = 'labels/label_delete.html'
     extra_context = {'title': _('Delete label')}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['button'] = _('Delete')
+        context['button'] = _('Yes, delete')
         return context
 
     def get_success_url(self):
         messages.success(self.request, _('Label successfully deleted'))
         return reverse_lazy('labels')
+
+    def post(self, request, *args, **kwargs):
+        if self.get_object().labels.count():
+            messages.error(
+                self.request,
+                _('It`s not possible to delete the label that is being used')
+            )
+            return redirect('labels')
+        return super().post(request, *args, **kwargs)

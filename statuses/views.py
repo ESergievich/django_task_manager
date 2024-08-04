@@ -19,14 +19,12 @@ class StatusesRequiredMixin:
 class StatusesListView(StatusesRequiredMixin, ListView):
     model = Status
     template_name = 'statuses/statuses_show.html'
-    extra_context = {
-        'title': _('Statuses'),
-        'button': _('Create status')
-    }
+    extra_context = {'title': _('Statuses')}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['statuses'] = self.model.objects.all()
+        context['button'] = _('Create status')
         return context
 
 
@@ -63,15 +61,23 @@ class StatusUpdateView(StatusesRequiredMixin, UpdateView):
 
 class StatusDeleteView(StatusesRequiredMixin, DeleteView):
     model = Status
-    form_class = StatusCreateForm
     template_name = 'statuses/status_delete.html'
     extra_context = {'title': _('Delete status')}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['button'] = _('Delete')
+        context['button'] = _('Yes, delete')
         return context
 
     def get_success_url(self):
         messages.success(self.request, _('Status successfully deleted'))
         return reverse_lazy('statuses')
+
+    def post(self, request, *args, **kwargs):
+        if self.get_object().statuses.count():
+            messages.error(
+                self.request,
+                _('It`s not possible to delete the status that is being used')
+            )
+            return redirect('statuses')
+        return super().post(request, *args, **kwargs)

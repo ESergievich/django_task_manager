@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.utils.translation import gettext as _
 from django_filters.views import FilterView
 
@@ -29,8 +29,9 @@ class TasksListView(TasksRequiredMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tasks'] = self.model.objects.all()
+        context['tasks'] = self.filterset.qs
         context['button'] = _('Show')
+        context['button_create'] = _('Create task')
         return context
 
 
@@ -51,6 +52,12 @@ class TaskCreateView(TasksRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class TaskDetailView(TasksRequiredMixin, DetailView):
+    model = Task
+    template_name = "tasks/task_show.html"
+    extra_context = {'title': _('Task view')}
 
 
 class TaskUpdateView(TasksRequiredMixin, UpdateView):
@@ -76,17 +83,18 @@ class TaskDeleteView(TasksRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['button'] = _('Delete')
+        context['button'] = _('Yes, delete')
         return context
 
     def get_success_url(self):
-        messages.success(self.request, _('Status successfully deleted'))
-        return reverse_lazy('statuses')
+        messages.success(self.request, _('Task successfully deleted'))
+        return reverse_lazy('tasks')
 
     def test_func(self):
         task = self.get_object()
         return self.request.user == task.author
 
     def handle_no_permission(self):
-        messages.error(self.request, _("You cannot delete this task because you are not the creator."))
+        messages.error(self.request,
+                       _("You cannot delete this task because you are not the creator."))
         return redirect(reverse_lazy('tasks'))

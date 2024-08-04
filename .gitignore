@@ -3,3 +3,6 @@
 .idea
 __pycashe__
 db.sqlite3
+.coverage
+coverage.xml
+.pytest_cache/
