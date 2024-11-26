@@ -1,83 +1,45 @@
-from django.contrib import messages
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from .models import Status
-from .forms import StatusCreateForm
+from utils import UserRequiredMixin, SuccessMessageMixin, RestrictDeleteIfLinkedToTaskMixin
 
 
-class StatusesRequiredMixin:
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            messages.error(request, _('You are not authorized! Please log in.'))
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
-
-
-class StatusesListView(StatusesRequiredMixin, ListView):
+class StatusesListView(UserRequiredMixin, ListView):
     model = Status
     template_name = 'statuses/statuses_show.html'
-    extra_context = {'title': _('Statuses')}
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['statuses'] = self.model.objects.all()
-        context['button'] = _('Create status')
-        return context
+    extra_context = {'title': _('Statuses'), 'button': _('Create status')}
+    context_object_name = 'statuses'
 
 
-class StatusCreateView(StatusesRequiredMixin, CreateView):
-    form_class = StatusCreateForm
-    template_name = 'statuses/status_form.html'
-    extra_context = {'title': _('Create status')}
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['button'] = _('Create')
-        return context
-
-    def get_success_url(self):
-        messages.success(self.request, _('Status successfully created'))
-        return reverse_lazy('statuses')
-
-
-class StatusUpdateView(StatusesRequiredMixin, UpdateView):
+class StatusCreateView(UserRequiredMixin, SuccessMessageMixin, CreateView):
     model = Status
-    form_class = StatusCreateForm
-    template_name = 'statuses/status_form.html'
-    extra_context = {'title': _('Update status')}
+    fields = ('name',)
+    template_name = 'form.html'
+    extra_context = {'title': _('Create status'), 'button': _('Create')}
+    success_url = reverse_lazy('statuses')
+    success_message = _('Status successfully created')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['button'] = _('Update')
-        return context
-
-    def get_success_url(self):
-        messages.success(self.request, _('Status successfully updated'))
-        return reverse_lazy('statuses')
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
-class StatusDeleteView(StatusesRequiredMixin, DeleteView):
+class StatusUpdateView(UserRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Status
-    template_name = 'statuses/status_delete.html'
-    extra_context = {'title': _('Delete status')}
+    fields = ('name',)
+    template_name = 'form.html'
+    extra_context = {'title': _('Update status'), 'button': _('Update')}
+    success_url = reverse_lazy('statuses')
+    success_message = _('Status successfully updated')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['button'] = _('Yes, delete')
-        return context
 
-    def get_success_url(self):
-        messages.success(self.request, _('Status successfully deleted'))
-        return reverse_lazy('statuses')
-
-    def post(self, request, *args, **kwargs):
-        if self.get_object().statuses.count():
-            messages.error(
-                self.request,
-                _('It`s not possible to delete the status that is being used')
-            )
-            return redirect('statuses')
-        return super().post(request, *args, **kwargs)
+class StatusDeleteView(UserRequiredMixin, RestrictDeleteIfLinkedToTaskMixin, SuccessMessageMixin, DeleteView):
+    model = Status
+    template_name = 'form_delete.html'
+    extra_context = {'title': _('Delete status'), 'button': _('Yes, delete')}
+    success_url = reverse_lazy('statuses')
+    success_message = _('Status successfully deleted')
+    restrict_message = _('It`s not possible to delete the status that is being used')
+    related_name = 'tasks_with_status'

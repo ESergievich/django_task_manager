@@ -18,12 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.views.i18n import set_language
-from .views import UserLoginView, CustomLogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', UserLoginView.as_view(), name='login'),
-    path('logout/', CustomLogoutView.as_view(), name='logout'),
     path('', TemplateView.as_view(template_name='base.html'), name='home'),
     path('users/', include('users.urls')),
     path('tasks/', include('tasks.urls')),

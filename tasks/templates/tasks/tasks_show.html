@@ -21,6 +21,7 @@
             <th>{% trans "Status" %}</th>
             <th>{% trans "Author" %}</th>
             <th>{% trans "Executor" %}</th>
+            <th>{% trans "Labels" %}</th>
             <th>{% trans "Date of creation" %}</th>
             <th></th>
         </tr>
@@ -33,6 +34,13 @@
             <td>{{ task.status }}</td>
             <td>{{ task.author }}</td>
             <td>{{ task.executor }}</td>
+            <td>
+                {% for label in task.labels.all %}
+                    <li>{{ label.name }}</li>
+                {% empty %}
+                    <li>{% trans "No labels assigned" %}</li>
+                {% endfor %}
+            </td>
             <td>{{ task.created_at }}</td>
             <td>
                 <a href="{% url 'task_update' task.pk %}">{% trans "Update" %}</a>

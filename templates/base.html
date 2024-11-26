@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% trans 'Task Manager' %}</title>
+    <title>{{ title|default:_('Task Manager') }}</title>
     {% bootstrap_css %}
     <style>
         .bottom-right {
@@ -21,7 +21,7 @@
     <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
+    <div class="collapse navbar-collapse position-relative" id="navbarToggleExternalContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'users' %}">{% trans "Users" %}</a>
@@ -43,7 +43,13 @@
                 <a class="nav-link" href="{% url 'tasks' %}">{% trans "Tasks" %}</a>
             </li>
         </ul>
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto position-absolute top-0 end-0">
+            <li class="nav-item nav-link">
+                {{ user.username }}
+            </li>
+            <li class="nav-item nav-link">
+                |
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">{% trans "Log out" %}</a>
             </li>
@@ -70,10 +76,10 @@
     {% block content %}
         <div class="card">
             <div class="card-body p-5 bg-light">
-                <div class="display-4">{% trans "Greetings from Hexlet!" %}</div>
-                <p class="lead">{% trans "Practical programming courses" %}</p>
+                <div class="display-4">{% trans "Task Manager" %}</div>
+                <p class="lead">{% trans "Simple and flexible task management web application" %}</p>
                 <hr>
-                <a class="btn btn-primary btn-lg" href="https://ru.hexlet.io">{% trans "To learn more" %}</a>
+                <a class="btn btn-primary btn-lg" href="{% url 'task_create' %}">{% trans "Get Started" %}</a>
             </div>
         </div>
     {% endblock %}
@@ -83,9 +89,6 @@
     {% endblock %}
 </main>
 <footer>
-    <div class="container my-5 pt-4 border-top">
-        <a target="_blank" href="https://ru.hexlet.io">Hexlet</a>
-    </div>
     <div class="bottom-right d-flex">
         <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center">
             {% csrf_token %}

@@ -10,6 +10,7 @@
         <tr>
             <th>ID</th>
             <th>{% trans "Name" %}</th>
+            <th>{% trans "Author" %}</th>
             <th>{% trans "Date of creation" %}</th>
             <th></th>
         </tr>
@@ -19,6 +20,11 @@
         <tr>
             <td>{{ label.id }}</td>
             <td>{{ label.name }}</td>
+            {% if label.author %}
+            <td>{{ label.author }}</td>
+            {% else %}
+            <td>{% trans "Unknown" %}</td>
+            {% endif %}
             <td>{{ label.created_at }}</td>
             <td>
                 <a href="{% url 'label_update' label.pk %}">{% trans "Update" %}</a>

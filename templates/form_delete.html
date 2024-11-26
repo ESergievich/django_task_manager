@@ -6,7 +6,7 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <p>{% trans "Are you sure you want to delete" %} {{ label.name }}?</p>
+        <p>{% trans "Are you sure you want to delete" %} {{ object }}?</p>
         {% bootstrap_button button button_type="submit" button_class="btn-danger" %}
     </form>
 {% endblock %}

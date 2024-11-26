@@ -5,18 +5,13 @@ install:
 
 # runserver commands
 runserver:
-		$(LOCAL) runserver 8080
-run-gunicorn:
-		export DJANGO_SETTINGS_MODULE=task_manager.settings
-		poetry run gunicorn task_manager.wsgi --log-file -
+		$(LOCAL) runserver 8000
 
 # service commands
 shell:
 		$(LOCAL) shell_plus
 collectstatic:
 		$(LOCAL) collectstatic
-secretkey:
-		poetry run python -c 'from django.utils.crypto import get_random_string; print(get_random_string(40))'
 
 # make translate messages commands
 messages:
@@ -29,8 +24,6 @@ migrations:
 		$(LOCAL) makemigrations
 migrate:
 		$(LOCAL) migrate
-migrate-rw:
-		railway run python manage.py migrate
 
 # test commands
 test:
@@ -53,4 +46,4 @@ check: selfcheck test lint
 build: check
 		poetry build
 
-.PHONY: install test lint selfcheck check build shell migrate collectstatic secretkey
+.PHONY: install test lint selfcheck check build shell migrate collectstatic

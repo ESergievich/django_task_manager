@@ -31,10 +31,6 @@ DEBUG = bool(os.environ.get('DEBUG', False))
 ALLOWED_HOSTS = ['0.0.0.0',
                  'localhost',
                  '127.0.0.1',
-                 'task-manager-4.herokuapp.com',
-                 'python-project-52-production-af44.up.railway.app',
-                 'project52.site', 'www.project52.site',
-                 'webserver',
                  ]
 
 # Application definition
@@ -46,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
     'django_bootstrap5',
     'task_manager',
     'users',
@@ -58,7 +53,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -66,7 +60,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
 ]
 
 ROOT_URLCONF = 'task_manager.urls'
@@ -94,8 +87,8 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600,
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600
     )
 }
 
@@ -146,26 +139,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = 'users'
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'users'
 LOGOUT_REDIRECT_URL = 'users'
 
 FIXTURE_DIRS = ('fixtures',)
-
-ROLLBAR = {
-    'access_token': os.getenv('ROLLBAR_ACCESS_TOKEN'),
-    'environment': 'development' if DEBUG else 'production',
-    'root': BASE_DIR,
-}
 
 if DEBUG:
     INSTALLED_APPS.insert(0, 'django_extensions')

@@ -50,11 +50,11 @@ class TestTaskList(SetupTestTasks):
 class TestCreateTask(SetupTestTasks):
     fixtures = ['users.json', 'statuses.json', 'labels.json', 'tasks.json']
 
-    def test_open_create_status_page_without_login(self):
+    def test_open_create_task_page_without_login(self):
         response = self.client.get(self.create_task_url)
         self.assertEqual(first=response.status_code, second=302)
 
-    def test_open_create_status_page_with_login(self):
+    def test_open_create_task_page_with_login(self):
         self.client.force_login(user=self.user1)
         response = self.client.get(self.create_task_url)
         self.assertEqual(first=response.status_code, second=200)
