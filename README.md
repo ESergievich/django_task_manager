@@ -6,11 +6,11 @@
 A simple and flexible task management web application
 </p>
 
-[![Actions Status](https://github.com/ESergievich/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/ESergievich/python-project-52/actions)
-[![.github/workflows/run_tests.yml](https://github.com/ESergievich/python-project-52/actions/workflows/run_tests.yml/badge.svg)](https://github.com/ESergievich/python-project-52/actions/workflows/run_tests.yml)
-[![lint check](https://github.com/ESergievich/python-project-52/actions/workflows/lint_check.yml/badge.svg)](https://github.com/ESergievich/python-project-52/actions/workflows/lint_check.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/8fa283d0e884378e630a/maintainability)](https://codeclimate.com/github/ESergievich/python-project-52/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8fa283d0e884378e630a/test_coverage)](https://codeclimate.com/github/ESergievich/python-project-52/test_coverage)
+[![Actions Status](https://github.com/ESergievich/django_task_manager/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/ESergievich/django_task_manager/actions)
+[![.github/workflows/run_tests.yml](https://github.com/ESergievich/django_task_manager/actions/workflows/run_tests.yml/badge.svg)](https://github.com/ESergievich/django_task_manager/actions/workflows/run_tests.yml)
+[![lint check](https://github.com/ESergievich/django_task_manager/actions/workflows/lint_check.yml/badge.svg)](https://github.com/ESergievich/django_task_manager/actions/workflows/lint_check.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8fa283d0e884378e630a/maintainability)](https://codeclimate.com/github/ESergievich/django_task_manager/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8fa283d0e884378e630a/test_coverage)](https://codeclimate.com/github/ESergievich/django_task_manager/test_coverage)
 
 <p>
 
@@ -71,7 +71,7 @@ When the tasks become numerous, it becomes difficult to navigate through them. F
 
 Clone the project:
 ```bash
->> git clone https://github.com/ESergievich/python-project-52.git && cd python-project-52
+>> git clone https://github.com/ESergievich/django_task_manager.git && cd django_task_manager
 ```
 
 Create `.env` file in the root folder and add following variables:
