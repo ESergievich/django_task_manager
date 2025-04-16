@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import ProtectedError
 from django.test import TestCase
 from django.urls import reverse_lazy
-from .models import Status
+from statuses.models import Status
 from task_manager.settings import FIXTURE_DIRS
 
 
